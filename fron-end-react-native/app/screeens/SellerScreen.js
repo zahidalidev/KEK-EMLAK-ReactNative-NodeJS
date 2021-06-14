@@ -3,6 +3,8 @@ import { Text, RefreshControl, ActivityIndicator, Dimensions, FlatList, StyleShe
 import { StatusBar } from 'expo-status-bar';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { Appbar } from 'react-native-paper';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 // config
 import colors from '../config/colors';
@@ -76,37 +78,7 @@ function SellerScreen(props) {
             addedBy: "Zahid",
             details: "This is description of the House",
             image: "https://i.ytimg.com/vi/axzlYeeWKWU/maxresdefault.jpg",
-        },
-        {
-            id: 6,
-            name: "Orchard Cottage",
-            price: "$310290",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://i.pinimg.com/originals/5c/a7/8e/5ca78e7e2390177b49da3777311c1b6e.jpg",
-        },
-        {
-            id: 7,
-            name: "Mill House",
-            price: "$210295",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://images.unsplash.com/photo-1576941089067-2de3c901e126?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fGhvdXNlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-        },
-        {
-            id: 8,
-            name: "Ivy Cottage",
-            price: "$212304",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-        },
+        }
     ]);
 
     const [feilds, setFeilds] = useState([
