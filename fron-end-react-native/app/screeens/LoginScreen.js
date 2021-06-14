@@ -11,7 +11,7 @@ import colors from '../config/colors';
 import AppTextButton from '../components/AppTextButton';
 
 import logo from "../assets/logo.png"
-// import { loginUser } from '../services/userService';
+import { loginUser } from '../services/userService';
 import { useEffect } from 'react';
 import AccountText from '../components/common/AccountText';
 
@@ -40,33 +40,33 @@ function LoginScreen(props) {
     }
 
     const handleSubmit = async () => {
-        // const email = feilds[0].value;
-        // const password = feilds[1].value;
-        // try {
-        //     setIndicator(true)
-        //     const { data } = await loginUser(email, password);
-        //     await AsyncStorage.setItem('token', data.id.toString());
-        //     setIndicator(false)
-        props.navigation.navigate('homeScreen')
-        // } catch (error) {
-        //     console.log("login error: ", error);
-        //     setIndicator(false)
-        //     toastify.error("Login Error");
-        // }
+        const email = feilds[0].value;
+        const password = feilds[1].value;
+        try {
+            setIndicator(true)
+            const { data } = await loginUser(email, password);
+            // await AsyncStorage.setItem('token', data.id.toString());
+            setIndicator(false)
+            props.navigation.navigate('homeScreen')
+        } catch (error) {
+            console.log("login error: ", error);
+            setIndicator(false)
+            toastify.error("Login Error");
+        }
     }
 
     // get token from AsyncStorage to confirm login or logout
     let validateWithToken = async () => {
-        // await AsyncStorage.removeItem('token');
-        // try {
-        //     let res = await AsyncStorage.getItem('token');
-        //     if (res) {
-        //         props.navigation.navigate('home')
-        //         return;
-        //     }
-        //     props.navigation.navigate('login');
-        // } catch (error) {
-        // }
+        await AsyncStorage.removeItem('token');
+        try {
+            let res = await AsyncStorage.getItem('token');
+            if (res) {
+                props.navigation.navigate('home')
+                return;
+            }
+            props.navigation.navigate('login');
+        } catch (error) {
+        }
     }
 
     useEffect(() => {
