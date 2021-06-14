@@ -13,7 +13,7 @@ router.get("/:email/:password", async (req, res) => {
         await conn.connect();
 
         const request = new sql.Request(conn);
-        request.query(`select name, id from customer where email = '${email}' and password = '${password}'`, (error, userResponce) => {
+        request.query(`select name, id from users where email = '${email}' and password = '${password}'`, (error, userResponce) => {
 
             if (error) return res.status(404).send("Not found");
 
@@ -40,15 +40,16 @@ router.get("/:email/:password", async (req, res) => {
 
 
 router.post("/", async (req, res) => {
-    const name = req.body.name;
+    const name = req.body.name.trim();
     const email = req.body.email.trim().toLowerCase();
     const password = req.body.password;
+    const role = req.body.role;
     try {
         await conn.connect();
 
         const request = new sql.Request(conn);
 
-        request.query(`select email from customer where email = '${email}'`, (verificationError, verificationResponce) => {
+        request.query(`select email from users where email = '${email}'`, (verificationError, verificationResponce) => {
             if (verificationError) {
                 conn.close();
                 return res.status(400).send(verificationError);
@@ -58,8 +59,8 @@ router.post("/", async (req, res) => {
                 conn.close();
                 return res.status(400).send("Email already registered");
             } else {
-                request.query(`insert into customer(name, email, password) 
-                values('${name}', '${email}', '${password}')`, (error, userResponce) => {
+                request.query(`insert into users(name, email, password, role) 
+                values('${name}', '${email}', '${password}', '${role}')`, (error, userResponce) => {
                     if (error) {
                         conn.close();
                         return res.status(400).send(error);

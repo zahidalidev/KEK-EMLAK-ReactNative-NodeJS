@@ -9,7 +9,7 @@ import AppTextInput from '../components/AppTextInput';
 import AppTextButton from '../components/AppTextButton';
 
 import colors from '../config/colors';
-// import { registerUser } from '../services/userService';
+import { registerUser } from '../services/userService';
 import AccountText from '../components/common/AccountText';
 
 function RegisterScreen(props) {
@@ -56,35 +56,37 @@ function RegisterScreen(props) {
     }
 
     const handleSubmit = async () => {
-        // const body = {
-        //     name: `${feilds[0].value} ${feilds[1].value}`,
-        //     email: feilds[2].value,
-        //     password: feilds[3].value
-        // }
+        const body = {
+            name: `${feilds[0].value} ${feilds[1].value}`,
+            email: feilds[2].value,
+            password: feilds[3].value
+        }
 
-        // if (body.password !== feilds[4].value) {
-        //     toastify.error("Password and Confirm password are not same");
-        //     return;
-        // }
+        // if password and confirm password does not match
+        if (body.password !== feilds[4].value) {
+            toastify.error("Password and Confirm password are not same");
+            return;
+        }
 
-        // if (body.name === '' || body.email === '' || body.password === '') {
-        //     toastify.error("Please fill all the feilds");
-        //     return;
-        // }
+        // if feilds are empty show alert
+        if (body.name === '' || body.email === '' || body.password === '') {
+            toastify.error("Please fill all the feilds");
+            return;
+        }
 
-        // setIndicator(true);
+        setIndicator(true);
 
-        // try {
-        //     await registerUser(body);
-        //     setIndicator(false);
-        //     toastify.success("Registration Successful");
-        //     setTimeout(() => {
-        //         props.navigation.navigate('login')
-        //     }, 2000)
-        // } catch (error) {
-        //     toastify.error("Registration Failed");
-        //     setIndicator(false);
-        // }
+        try {
+            await registerUser(body);
+            setIndicator(false);
+            toastify.success("Registration Successful");
+            setTimeout(() => {
+                props.navigation.navigate('login')
+            }, 2000)
+        } catch (error) {
+            toastify.error("Registration Failed");
+            setIndicator(false);
+        }
     }
 
     return (

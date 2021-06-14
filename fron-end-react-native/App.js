@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, LogBox } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack"
 import { NavigationContainer } from "@react-navigation/native"
 
@@ -38,19 +37,8 @@ export default function App() {
         <Stack.Screen name="registerScreen" >{(props) => <RegisterScreen {...props} />}</Stack.Screen>
         <Stack.Screen name="homeScreen" >{(props) => <HomeScreen {...props} />}</Stack.Screen>
         <Stack.Screen name="sellerScreen" >{(props) => <SellerScreen {...props} />}</Stack.Screen>
-        {/* <Stack.Screen name="productScreen" >{(props) => <ProductScreen {...props} />}</Stack.Screen> */}
-        {/* <Stack.Screen name="productDetailsScreen" >{(props) => <ProductDetailsScreen {...props} />}</Stack.Screen>
-        <Stack.Screen name="cartScreen" >{(props) => <CartScreen {...props} />}</Stack.Screen> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
