@@ -3,12 +3,13 @@ import { Platform, StyleSheet, Text, View, ActivityIndicator } from 'react-nativ
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
+import Toast from 'toastify-react-native';
 
 import AppTextInput from '../components/AppTextInput';
-import colors from '../config/colors';
 import AppTextButton from '../components/AppTextButton';
+
+import colors from '../config/colors';
 // import { registerUser } from '../services/userService';
-import Toast from 'toastify-react-native';
 import AccountText from '../components/common/AccountText';
 
 function RegisterScreen(props) {

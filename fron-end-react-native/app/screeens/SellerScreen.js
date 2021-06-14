@@ -6,8 +6,9 @@ import { Appbar } from 'react-native-paper';
 
 // config
 import colors from '../config/colors';
-import AppTextInput from '../components/AppTextInput';
+import AddProduct from "../components/AddProduct"
 import ProductCard from '../components/ProductCard';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 function SellerScreen(props) {
     const [oldProducts, setOldProducts] = useState([]);
@@ -108,27 +109,66 @@ function SellerScreen(props) {
         },
     ]);
 
+    const [feilds, setFeilds] = useState([
+        {
+            id: 0,
+            placeHolder: "Name",
+            value: '',
+        },
+        {
+            id: 1,
+            placeHolder: "Details",
+            value: '',
+        },
+        {
+            id: 2,
+            placeHolder: "Location",
+            value: '',
+        },
+        {
+            id: 3,
+            placeHolder: "Price",
+            value: '',
+        },
+        {
+            id: 4,
+            placeHolder: "Area",
+            value: '',
+        },
+    ]);
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setRefreshing(false);
         // getIngredients();
     }, []);
 
+    const handleChange = (text, id) => {
+        const tempFeilds = [...feilds];
+        tempFeilds[id].value = text;
+        setFeilds(tempFeilds);
+    }
+
+    const handleSubmit = async () => {
+
+    }
+
     return (
         <>
             <StatusBar style="light" backgroundColor={colors.primary} />
             <Appbar.Header style={{ backgroundColor: colors.primary, width: "100%", justifyContent: "space-between" }} >
-                <Appbar.Action color={colors.white} icon="format-align-left" onPress={() => { }} />
+                <Appbar.BackAction color={colors.white} icon="" onPress={() => props.navigation.navigate('homeScreen')} />
                 <Appbar.Content color={colors.white} title="For Seller" />
             </Appbar.Header>
-            <View style={styles.container}>
+
+            <View style={[styles.container, { backgroundColor: activeComponent === 'products' ? colors.white : colors.lightGrey }]}>
                 {activityIndic
-                    ? <View style={{ flexDirection: 'column', marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 1.8, alignItems: 'center', justifyContent: 'center' }} >
+                    ? <View style={{ flexDirection: 'column', marginTop: -RFPercentage(7), width: "100%", flex: 1.8, alignItems: 'center', justifyContent: 'center' }} >
                         <ActivityIndicator color={colors.primary} size={RFPercentage(6)} />
                     </View>
                     : <>
                         {/* Bottom Contaienr */}
-                        <View style={{ flexDirection: 'column', marginTop: RFPercentage(2), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.white, width: "100%", flex: 1.8, alignItems: 'center', justifyContent: 'center' }} >
+                        <View style={{ flexDirection: 'column', backgroundColor: activeComponent === 'products' ? colors.white : colors.lightGrey, marginTop: RFPercentage(2), width: "100%", flex: 1.8, alignItems: 'center', justifyContent: 'center' }} >
 
                             {/* buttons */}
                             <View style={{ flexDirection: 'column', marginTop: RFPercentage(1), backgroundColor: colors.primary }} >
@@ -171,41 +211,14 @@ function SellerScreen(props) {
                                                     <ProductCard index={index} price={item.price} title={item.name} description={item.details} image={item.image} />
 
                                                 }
-                                            </TouchableOpacity>
+                                            </ TouchableOpacity>
 
                                         }
-                                    /> : null
-                            }
-                            {
-                                activeComponent === 'addProducts' ?
-                                    <FlatList
-                                        refreshControl={
-                                            <RefreshControl
-                                                refreshing={refreshing}
-                                                onRefresh={onRefresh}
-                                            />}
-                                        style={{ marginTop: RFPercentage(3.5) }}
-                                        showsVerticalScrollIndicator={false}
-                                        data={products.length === 0 ? [{ blank: true }] : products}
-                                        keyExtractor={(item, index) => index.toString()}
-                                        renderItem={({ item, index }) =>
-                                            <TouchableOpacity onPress={() => handlePress(item)} onLongPress={() => handleLongPress(item)} activeOpacity={0.7} style={{
-                                                margin: RFPercentage(1),
-                                                marginLeft: "6%",
-                                                backgroundColor: item.toDelete ? "rgba(0, 129, 105, 0.1)" : "white",
-                                                // maxHeight: item.blank ? 0 : null,
-                                                width: "100%",
-                                                height: RFPercentage(12),
-                                                flexDirection: "column",
-                                            }} >
-                                                {item.blank ? null :
-                                                    <OrderCard index={index} showDelete={true} onConfirm={() => console.log("confirm")} onTaken={() => console.log('taken')} onDelete={() => console.log('delete')} price={item.price} title={item.title} description={item.description} image={item.image} />
-                                                }
-                                            </TouchableOpacity>
+                                    /> :
 
-                                        }
-                                    /> : null
+                                    <AddProduct feilds={feilds} handleChange={handleChange} handleSubmit={handleSubmit} />
                             }
+
 
                         </View>
 
@@ -219,7 +232,6 @@ function SellerScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
         alignItems: 'center',
         justifyContent: 'center',
         width: "100%"
