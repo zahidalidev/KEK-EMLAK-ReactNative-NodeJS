@@ -45,9 +45,9 @@ function LoginScreen(props) {
         try {
             setIndicator(true)
             const { data } = await loginUser(email, password);
-            // await AsyncStorage.setItem('token', data.id.toString());
+            await AsyncStorage.setItem('currentUser', JSON.stringify(data));
             setIndicator(false)
-            props.navigation.navigate('homeScreen')
+            props.navigation.navigate('homeScreen', { currentUser: data })
         } catch (error) {
             console.log("login error: ", error);
             setIndicator(false)
@@ -57,20 +57,23 @@ function LoginScreen(props) {
 
     // get token from AsyncStorage to confirm login or logout
     let validateWithToken = async () => {
-        await AsyncStorage.removeItem('token');
+        // await AsyncStorage.removeItem('currentUser');
         try {
-            let res = await AsyncStorage.getItem('token');
-            if (res) {
-                props.navigation.navigate('home')
+            let data = await AsyncStorage.getItem('currentUser');
+            console.log(data)
+
+            if (data) {
+                props.navigation.navigate('homeScreen', { currentUser: data })
                 return;
             }
-            props.navigation.navigate('login');
+            props.navigation.navigate('loginScreen');
         } catch (error) {
+            console.log(error)
         }
     }
 
     useEffect(() => {
-        // validateWithToken();
+        validateWithToken();
     }, [props.route.params]);
 
     return (

@@ -13,18 +13,14 @@ router.get("/:email/:password", async (req, res) => {
         await conn.connect();
 
         const request = new sql.Request(conn);
-        request.query(`select name, id from users where email = '${email}' and password = '${password}'`, (error, userResponce) => {
+        request.query(`select * from users where email = '${email}' and password = '${password}'`, (error, userResponce) => {
 
             if (error) return res.status(404).send("Not found");
 
             if (userResponce.recordset.length != 0) {
                 conn.close();
                 const user = userResponce.recordset[0];
-                const userDetails = {
-                    name: user.name,
-                    id: user.id
-                }
-                return res.send(userDetails);
+                return res.send(userResponce.recordset[0]);
             } else {
                 conn.close();
                 return res.status(404).send("Email or Password is Incorrect");
