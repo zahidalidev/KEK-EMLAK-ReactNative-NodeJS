@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
-import { Platform, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { Platform, StyleSheet, Text, View, ActivityIndicator, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import Toast from 'toastify-react-native';
+import ReactNativeCrossPicker from "react-native-cross-picker"
+import { MaterialCommunityIcons } from "@expo/vector-icons"; // for expo and any other for react-native-cli
 
+// components
 import AppTextInput from '../components/AppTextInput';
 import AppTextButton from '../components/AppTextButton';
-
-import colors from '../config/colors';
-import { registerUser } from '../services/userService';
 import AccountText from '../components/common/AccountText';
+
+// config
+import colors from '../config/colors';
+
+//services
+import { registerUser } from '../services/userService';
 
 function RegisterScreen(props) {
     const [toastify, setToastify] = useState();
     const [indicator, setIndicator] = useState(false);
+    const [role, setRole] = useState('user')
+
+    const roles = [
+        { label: "User", value: 'user' },
+        { label: "Seller", value: 'seller' }
+    ]
 
     const [feilds, setFeilds] = useState([
         {
@@ -59,7 +71,8 @@ function RegisterScreen(props) {
         const body = {
             name: `${feilds[0].value} ${feilds[1].value}`,
             email: feilds[2].value,
-            password: feilds[3].value
+            password: feilds[3].value,
+            role
         }
 
         // if password and confirm password does not match
@@ -89,6 +102,14 @@ function RegisterScreen(props) {
         }
     }
 
+    const iconComponent = () => {
+        return <MaterialCommunityIcons
+            name={"chevron-down"}
+            size={20}
+            color={"grey"}
+        />
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
@@ -106,32 +127,51 @@ function RegisterScreen(props) {
                 : <>
                     {/* Bottom Contaienr */}
                     <View style={{ marginTop: -RFPercentage(7), borderTopLeftRadius: RFPercentage(8), backgroundColor: colors.lightGrey, width: "100%", flex: 1.8, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
-                        {/* Text feilds */}
-                        {feilds.map((item, i) =>
-                            <View key={i} style={{ marginTop: i == 0 ? RFPercentage(10) : RFPercentage(4), width: "85%" }} >
-                                <AppTextInput
-                                    placeHolder={item.placeHolder}
+                        <ScrollView style={{ width: "100%", flex: 1.8, flexDirection: 'column' }} >
+                            {/* Text feilds */}
+                            {feilds.map((item, i) =>
+                                <>
+                                    <View key={i} style={{ marginLeft: "7.5%", marginTop: i == 0 ? RFPercentage(6) : RFPercentage(4), width: "85%" }} >
+                                        <AppTextInput
+                                            placeHolder={item.placeHolder}
+                                            width="100%"
+                                            value={item.value}
+                                            onChange={(text) => handleChange(text, item.id)}
+                                            secure={item.secure}
+                                        />
+                                    </View>
+                                    {item.id === 2 ?
+                                        <View key={i + 'r'} style={{ marginLeft: "7.5%", marginTop: i == 0 ? RFPercentage(6) : RFPercentage(4), width: "85%" }} >
+                                            <ReactNativeCrossPicker
+                                                modalTextStyle={{ color: colors.primary }}
+                                                mainComponentStyle={{ height: RFPercentage(6.2), backgroundColor: colors.white, borderColor: "rgba(0, 74, 173, 0)" }}
+                                                iconComponent={iconComponent}
+                                                width="100%"
+                                                items={roles}
+                                                setItem={setRole} selectedItem={role}
+                                                placeholder="Select Role"
+                                                modalMarginTop={"80%"} // popup model margin from the top 
+                                            />
+                                        </View>
+                                        : null
+                                    }
+                                </>
+                            )}
+
+                            {/* SignUp button */}
+                            <View style={{ marginBottom: RFPercentage(5), marginLeft: "7.5%", marginTop: RFPercentage(5), width: "85%", flex: 1, alignItems: "flex-end" }} >
+                                <AppTextButton
+                                    name="Sign Up"
+                                    borderRadius={RFPercentage(1.3)}
+                                    onSubmit={() => handleSubmit()}
+                                    backgroundColor={colors.primary}
                                     width="100%"
-                                    value={item.value}
-                                    onChange={(text) => handleChange(text, item.id)}
-                                    secure={item.secure}
+                                    height={RFPercentage(5.5)}
                                 />
                             </View>
-                        )}
-
-                        {/* SignUp button */}
-                        <View style={{ marginTop: RFPercentage(5), width: "85%", flex: 1, alignItems: "flex-end" }} >
-                            <AppTextButton
-                                name="Sign Up"
-                                borderRadius={RFPercentage(1.3)}
-                                onSubmit={() => handleSubmit()}
-                                backgroundColor={colors.primary}
-                                width="100%"
-                                height={RFPercentage(5.5)}
-                            />
-                        </View>
-
+                        </ScrollView>
                     </View>
+
 
                     {/* Signup text */}
                     <AccountText navigate={props.navigation.navigate} description="Already have an account? " buttnText="Sign In" location="loginScreen" />
