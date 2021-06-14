@@ -17,6 +17,7 @@ function SellerScreen(props) {
     const [activityIndic, setActivityIndic] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [activeComponent, setActiveComponent] = useState('products');
+    const [imageSelected, setImageSelected] = useState(false);
 
     const [products, setProducts] = useState([
         {
@@ -121,6 +122,25 @@ function SellerScreen(props) {
         setFeilds(tempFeilds);
     }
 
+    const uploadImages = async () => {
+        try {
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
+            let permissionResult = await ImagePicker.getMediaLibraryPermissionsAsync();
+
+            if (permissionResult.granted === false) {
+                alert("Permission to access camera roll is required!");
+                return;
+            }
+
+            let pickerResult = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true
+            });
+            console.log(pickerResult)
+        } catch (error) {
+
+        }
+    }
+
     const handleSubmit = async () => {
 
     }
@@ -188,7 +208,7 @@ function SellerScreen(props) {
                                         }
                                     /> :
 
-                                    <AddProduct feilds={feilds} handleChange={handleChange} handleSubmit={handleSubmit} />
+                                    <AddProduct feilds={feilds} imageSelected={imageSelected} uploadImages={uploadImages} handleChange={handleChange} handleSubmit={handleSubmit} />
                             }
 
 
