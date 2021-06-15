@@ -115,7 +115,7 @@ function RegisterScreen(props) {
             <StatusBar style="light" backgroundColor={colors.primary} />
 
             <Toast key={89} ref={(t) => setToastify(t)} />
-            {/* Kitchen buddy top container */}
+            {/* Top container */}
             <View style={{ backgroundColor: colors.primary, flex: 0.6, width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
                 <Text style={{ marginBottom: RFPercentage(5), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(4) : RFPercentage(6.5) }} >Sign Up</Text>
             </View>

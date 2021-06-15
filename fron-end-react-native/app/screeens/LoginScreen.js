@@ -88,7 +88,7 @@ function LoginScreen(props) {
             {/* toast component */}
             <Toast ref={(c) => setToastify(c)} />
 
-            {/* Kitchen buddy top container */}
+            {/* Top container */}
             <View style={{ backgroundColor: colors.primary, width: "100%", flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
                 <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }} >
                     <Image source={logo} style={{ height: RFPercentage(20), width: RFPercentage(20), marginBottom: RFPercentage(5) }} />
