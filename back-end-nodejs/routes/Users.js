@@ -19,7 +19,6 @@ router.get("/:email/:password", async (req, res) => {
 
             if (userResponce.recordset.length != 0) {
                 conn.close();
-                const user = userResponce.recordset[0];
                 return res.send(userResponce.recordset[0]);
             } else {
                 conn.close();

@@ -133,7 +133,9 @@ function HomeScreen(props) {
     const getIngredients = async () => {
         // try {
         //     setActivityIndic(true)
-        //     const userId = await AsyncStorage.getItem('token');
+        //     let data = await AsyncStorage.getItem('currentUser');
+        //     data = JSON.parse(data);
+
         //     const { data } = await getAllIngredients(userId);
         //     const allIngredients = data.map(item => {
         //         item.expirationDate = GetSqlDate(new Date(item.expirationDate));

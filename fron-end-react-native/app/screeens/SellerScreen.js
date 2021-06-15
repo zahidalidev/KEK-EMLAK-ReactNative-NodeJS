@@ -11,6 +11,7 @@ import colors from '../config/colors';
 import AddProduct from "../components/AddProduct"
 import ProductCard from '../components/ProductCard';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { handeAddProduct } from '../services/ProductService';
 
 function SellerScreen(props) {
     const [oldProducts, setOldProducts] = useState([]);
@@ -18,6 +19,7 @@ function SellerScreen(props) {
     const [refreshing, setRefreshing] = useState(false);
     const [activeComponent, setActiveComponent] = useState('products');
     const [imageSelected, setImageSelected] = useState(false);
+    const [image, setImage] = useState(false);
 
     const [products, setProducts] = useState([
         {
@@ -133,15 +135,25 @@ function SellerScreen(props) {
             }
 
             let pickerResult = await ImagePicker.launchImageLibraryAsync({
-                allowsEditing: true
+                allowsEditing: true,
+                base64: true,
             });
-            console.log(pickerResult)
+
+            setImage(pickerResult)
+            setImageSelected(true)
         } catch (error) {
 
         }
     }
 
     const handleSubmit = async () => {
+        try {
+            const { data } = await handeAddProduct(image)
+
+        } catch (error) {
+            console.log(error)
+        }
+
 
     }
 
