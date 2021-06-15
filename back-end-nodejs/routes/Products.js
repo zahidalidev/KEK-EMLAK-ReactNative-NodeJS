@@ -68,7 +68,6 @@ router.get("/", async (req, res) => {
 
             if (responce.recordset.length != 0) {
                 conn.close();
-                console.log('hi: ', responce.recordset)
                 return res.send(responce.recordset);
             } else {
                 conn.close();
@@ -85,8 +84,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:userId", async (req, res) => {
     try {
-        const userId = req.params.userId.trim();
-
+        const userId = req.params.userId;
         await conn.connect();
 
         const request = new sql.Request(conn);
@@ -96,7 +94,8 @@ router.get("/:userId", async (req, res) => {
 
             if (responce.recordset.length != 0) {
                 conn.close();
-                return res.send(responce.recordset[0]);
+
+                return res.send(responce.recordset);
             } else {
                 conn.close();
                 return res.status(404).send("Not Found");

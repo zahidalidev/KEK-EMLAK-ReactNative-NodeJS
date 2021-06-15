@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, RefreshControl, ActivityIndicator, Dimensions, FlatList, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { RFPercentage } from 'react-native-responsive-fontsize';
@@ -7,12 +7,16 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// config
-import colors from '../config/colors';
+// components
 import AddProduct from "../components/AddProduct"
 import ProductCard from '../components/ProductCard';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { handeAddProduct } from '../services/ProductService';
+
+// config
+import config from "../config/config.json";
+import colors from '../config/colors';
+
+// services
+import { handeAddProduct, getProductsById } from '../services/ProductService';
 
 function SellerScreen(props) {
     const [oldProducts, setOldProducts] = useState([]);
@@ -113,11 +117,43 @@ function SellerScreen(props) {
         },
     ]);
 
+    const getCurrentUser = async () => {
+        try {
+            let currentUser = await AsyncStorage.getItem('currentUser')
+            currentUser = JSON.parse(currentUser)
+            return currentUser.id;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getSellersProducts = async () => {
+        const userId = await getCurrentUser();
+        try {
+            setActivityIndic(true)
+
+            const { data } = await getProductsById(userId);
+            let newData = data.map(item => {
+                item.image = `${config.apiEndPoint}/${item.image}`
+                return item;
+            });
+            setProducts(newData);
+        } catch (error) {
+            console.log("Error All ingredients: ", error)
+        }
+        setRefreshing(false)
+        setActivityIndic(false);
+    }
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setRefreshing(false);
-        // getIngredients();
+        getSellersProducts();
     }, []);
+
+    useEffect(() => {
+        getSellersProducts()
+    }, [])
 
     const handleChange = (text, id) => {
         const tempFeilds = [...feilds];

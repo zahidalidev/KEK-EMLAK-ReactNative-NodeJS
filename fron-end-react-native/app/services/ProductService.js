@@ -7,6 +7,10 @@ export const getAllProducts = async () => {
     return await axios.get(apiEndPoint)
 }
 
+export const getProductsById = async (id) => {
+    return await axios.get(`${apiEndPoint}/${id}`)
+}
+
 export const handeAddProduct = async (image, data) => {
     return await axios.post(apiEndPoint,
         JSON.stringify({

@@ -27,10 +27,10 @@ function HomeScreen(props) {
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setRefreshing(false);
-        getIngredients();
+        getProducts();
     }, []);
 
-    const getIngredients = async () => {
+    const getProducts = async () => {
         try {
             setActivityIndic(true)
 
@@ -59,7 +59,7 @@ function HomeScreen(props) {
     }
     useEffect(() => {
         getCurrentUser();
-        getIngredients();
+        getProducts();
     }, []);
 
 
