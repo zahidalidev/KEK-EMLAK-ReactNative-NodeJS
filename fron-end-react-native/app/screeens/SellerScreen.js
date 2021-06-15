@@ -5,6 +5,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import { Appbar } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // config
 import colors from '../config/colors';
@@ -147,13 +148,27 @@ function SellerScreen(props) {
     }
 
     const handleSubmit = async () => {
+
         try {
-            const { data } = await handeAddProduct(image)
+            let currentUser = await AsyncStorage.getItem('currentUser')
+            currentUser = JSON.parse(currentUser)
+            let userId = currentUser.id;
+
+            const data = {
+                name: feilds[0].value,
+                details: feilds[1].value,
+                location: feilds[2].value,
+                price: feilds[3].value,
+                area: feilds[4].value,
+                userId
+            }
+
+            const { data: res } = await handeAddProduct(image, data)
+            props.navigation.navigate('homeScreen')
 
         } catch (error) {
             console.log(error)
         }
-
 
     }
 

@@ -1,15 +1,17 @@
 import axios from "axios";
 import config from "../config/config.json";
 
-const apiEndPoint = config.apiEndPoint + '/products';
+const apiEndPoint = config.apiEndPoint + '/api' + '/products';
 
-export const handeAddProduct = async (image) => {
+export const getAllProducts = async () => {
+    return await axios.get(apiEndPoint)
+}
+
+export const handeAddProduct = async (image, data) => {
     return await axios.post(apiEndPoint,
         JSON.stringify({
             imgsource: image.base64,
-            data: {
-                zahid: "Hi"
-            }
+            data
         }),
         {
             headers: {
@@ -20,3 +22,5 @@ export const handeAddProduct = async (image) => {
 
     );
 }
+
+

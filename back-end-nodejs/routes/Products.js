@@ -25,8 +25,8 @@ router.post("/", async (req, res) => {
         if (err) throw err
     })
 
-    const name = req.body.data.name.trim();
-    const details = req.body.data.details.trim();
+    const name = req.body.data.name;
+    const details = req.body.data.details;
     const location = req.body.data.location;
     const price = req.body.data.price;
     const area = req.body.data.area;
@@ -59,17 +59,17 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-
         await conn.connect();
 
         const request = new sql.Request(conn);
-        request.query(`select * from products'`, (error, responce) => {
+        request.query(`select * from products`, (error, responce) => {
 
             if (error) return res.status(404).send("Not found");
 
             if (responce.recordset.length != 0) {
                 conn.close();
-                return res.send(responce.recordset[0]);
+                console.log('hi: ', responce.recordset)
+                return res.send(responce.recordset);
             } else {
                 conn.close();
                 return res.status(404).send("Not Found");

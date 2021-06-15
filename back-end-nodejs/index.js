@@ -8,10 +8,8 @@ const Products = require("./routes/Products")
 const app = express();
 app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json({ limit: '15MB' }))
-
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '15MB' }));
 
 app.use(express.static('assets'))
 app.use("/api/users", Users);
