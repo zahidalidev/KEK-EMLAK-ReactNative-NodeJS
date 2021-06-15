@@ -91,15 +91,15 @@ function RegisterScreen(props) {
 
         try {
             await registerUser(body);
-            setIndicator(false);
             toastify.success("Registration Successful");
+            setIndicator(false)
             setTimeout(() => {
-                props.navigation.navigate('login')
+                props.navigation.navigate('loginScreen')
             }, 2000)
         } catch (error) {
             toastify.error("Registration Failed");
-            setIndicator(false);
         }
+        setIndicator(false);
     }
 
     const iconComponent = () => {
@@ -114,7 +114,7 @@ function RegisterScreen(props) {
         <View style={styles.container}>
             <StatusBar style="light" backgroundColor={colors.primary} />
 
-            <Toast ref={(t) => setToastify(t)} />
+            <Toast key={89} ref={(t) => setToastify(t)} />
             {/* Kitchen buddy top container */}
             <View style={{ backgroundColor: colors.primary, flex: 0.6, width: "100%", flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} >
                 <Text style={{ marginBottom: RFPercentage(5), color: colors.white, fontSize: Platform.OS === "ios" ? RFPercentage(4) : RFPercentage(6.5) }} >Sign Up</Text>
@@ -141,7 +141,7 @@ function RegisterScreen(props) {
                                         />
                                     </View>
                                     {item.id === 2 ?
-                                        <View key={i + 'r'} style={{ marginLeft: "7.5%", marginTop: i == 0 ? RFPercentage(6) : RFPercentage(4), width: "85%" }} >
+                                        <View key={i * 4} style={{ marginLeft: "7.5%", marginTop: i == 0 ? RFPercentage(6) : RFPercentage(4), width: "85%" }} >
                                             <ReactNativeCrossPicker
                                                 modalTextStyle={{ color: colors.primary }}
                                                 mainComponentStyle={{ height: RFPercentage(6.2), backgroundColor: colors.white, borderColor: "rgba(0, 74, 173, 0)" }}

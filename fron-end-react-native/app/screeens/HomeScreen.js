@@ -42,7 +42,7 @@ function HomeScreen(props) {
 
             setProducts(newData);
         } catch (error) {
-            console.log("Error All ingredients: ", error)
+            console.log("Error Products Not Found: ", error)
         }
         setRefreshing(false)
         setActivityIndic(false);
@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: "100%"
     },
-    loginButton: { marginTop: RFPercentage(5), width: "85%", flex: 1, alignItems: "flex-end" }
 })
 
 export default HomeScreen;

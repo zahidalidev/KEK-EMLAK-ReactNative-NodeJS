@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, RefreshControl, ActivityIndicator, Dimensions, FlatList, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { Text, RefreshControl, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { Appbar } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from "toastify-react-native";
 
 // components
 import AddProduct from "../components/AddProduct"
@@ -19,75 +19,14 @@ import colors from '../config/colors';
 import { handeAddProduct, getProductsById } from '../services/ProductService';
 
 function SellerScreen(props) {
-    const [oldProducts, setOldProducts] = useState([]);
+    const [toastify, setToastify] = useState();
     const [activityIndic, setActivityIndic] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [activeComponent, setActiveComponent] = useState('products');
     const [imageSelected, setImageSelected] = useState(false);
     const [image, setImage] = useState(false);
 
-    const [products, setProducts] = useState([
-        {
-            id: 0,
-            name: "Green Houese",
-            price: "$239012",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aG91c2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80",
-        },
-        {
-            id: 1,
-            name: "Corner Cottage.",
-            price: "$209899",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://i.pinimg.com/originals/66/d9/f5/66d9f5afdc5337d3f9eac362b970c426.jpg",
-        },
-        {
-            id: 2,
-            name: "Orchard Cottage",
-            price: "$234230",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        },
-        {
-            id: 3,
-            name: "Mill House",
-            price: "$212935",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://cdn.vox-cdn.com/thumbor/frFQQhOsxl8DctGjkR8OLHpdKMs=/0x0:3686x2073/1200x800/filters:focal(1549x743:2137x1331)/cdn.vox-cdn.com/uploads/chorus_image/image/68976842/House_Tour_Liverman_3D6A3138_tour.0.jpg",
-        },
-        {
-            id: 4,
-            name: "Ivy Cottage",
-            price: "$219344",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqI0K4oWhQDXJ6qFGP-hlEg_j9nYFNrO7VK_BrXjxi2IEK9asUk-gpI0wHAEY55yq03D0&usqp=CAU",
-        },
-        {
-            id: 5,
-            name: "Corner Cottage.",
-            price: "$209899",
-            location: "this is a address",
-            area: "This area",
-            addedBy: "Zahid",
-            details: "This is description of the House",
-            image: "https://i.ytimg.com/vi/axzlYeeWKWU/maxresdefault.jpg",
-        }
-    ]);
+    const [products, setProducts] = useState([]);
 
     const [feilds, setFeilds] = useState([
         {
@@ -184,7 +123,7 @@ function SellerScreen(props) {
     }
 
     const handleSubmit = async () => {
-
+        setActivityIndic(true)
         try {
             let currentUser = await AsyncStorage.getItem('currentUser')
             currentUser = JSON.parse(currentUser)
@@ -199,13 +138,16 @@ function SellerScreen(props) {
                 userId
             }
 
-            const { data: res } = await handeAddProduct(image, data)
-            props.navigation.navigate('homeScreen')
+            await handeAddProduct(image, data)
+            setActivityIndic(false)
+            toastify.success("Product Added")
 
         } catch (error) {
             console.log(error)
+            toastify.error("Product Not Added")
         }
 
+        setActivityIndic(false)
     }
 
     return (
@@ -215,6 +157,9 @@ function SellerScreen(props) {
                 <Appbar.BackAction color={colors.white} icon="" onPress={() => props.navigation.navigate('homeScreen')} />
                 <Appbar.Content color={colors.white} title="For Seller" />
             </Appbar.Header>
+
+            {/* toast component */}
+            <Toast ref={(c) => setToastify(c)} />
 
             <View style={[styles.container, { backgroundColor: activeComponent === 'products' ? colors.white : colors.lightGrey }]}>
                 {activityIndic
@@ -274,9 +219,7 @@ function SellerScreen(props) {
                                     <AddProduct feilds={feilds} imageSelected={imageSelected} uploadImages={uploadImages} handleChange={handleChange} handleSubmit={handleSubmit} />
                             }
 
-
                         </View>
-
                     </>
                 }
             </View>

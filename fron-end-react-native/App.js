@@ -1,4 +1,5 @@
 import React from 'react';
+import { LogBox } from 'react-native'
 import { createStackNavigator } from "@react-navigation/stack"
 import { NavigationContainer } from "@react-navigation/native"
 
@@ -8,6 +9,7 @@ import RegisterScreen from "./app/screeens/RegisterScreen"
 import HomeScreen from "./app/screeens/HomeScreen"
 import SellerScreen from "./app/screeens/SellerScreen"
 
+LogBox.ignoreAllLogs()
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -24,21 +26,23 @@ export default function App() {
   };
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{
-        headerShown: false,
-        transitionSpec: {
-          open: config,
-          close: config,
-        },
-      }} initialRouteName='loginScreen'
-      >
-        <Stack.Screen name="loginScreen" >{(props) => <LoginScreen {...props} />}</Stack.Screen>
-        <Stack.Screen name="registerScreen" >{(props) => <RegisterScreen {...props} />}</Stack.Screen>
-        <Stack.Screen name="homeScreen" >{(props) => <HomeScreen {...props} />}</Stack.Screen>
-        <Stack.Screen name="sellerScreen" >{(props) => <SellerScreen {...props} />}</Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{
+          headerShown: false,
+          transitionSpec: {
+            open: config,
+            close: config,
+          },
+        }} initialRouteName='loginScreen'
+        >
+          <Stack.Screen name="loginScreen" >{(props) => <LoginScreen {...props} />}</Stack.Screen>
+          <Stack.Screen name="registerScreen" >{(props) => <RegisterScreen {...props} />}</Stack.Screen>
+          <Stack.Screen name="homeScreen" >{(props) => <HomeScreen {...props} />}</Stack.Screen>
+          <Stack.Screen name="sellerScreen" >{(props) => <SellerScreen {...props} />}</Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 }
 

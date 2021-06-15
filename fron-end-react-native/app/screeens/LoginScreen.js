@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Platform, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants'
@@ -6,14 +6,19 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from "toastify-react-native";
 
+// components
 import AppTextInput from '../components/AppTextInput';
-import colors from '../config/colors';
 import AppTextButton from '../components/AppTextButton';
-
-import logo from "../assets/logo.png"
-import { loginUser } from '../services/userService';
-import { useEffect } from 'react';
 import AccountText from '../components/common/AccountText';
+
+// config
+import colors from '../config/colors';
+
+// services
+import { loginUser } from '../services/userService';
+
+// images
+import logo from "../assets/logo.png"
 
 function LoginScreen(props) {
     const [indicator, setIndicator] = useState(false);
@@ -50,9 +55,9 @@ function LoginScreen(props) {
             props.navigation.navigate('homeScreen', { currentUser: data })
         } catch (error) {
             console.log("login error: ", error);
-            setIndicator(false)
             toastify.error("Login Error");
         }
+        setIndicator(false);
     }
 
     // get token from AsyncStorage to confirm login or logout
