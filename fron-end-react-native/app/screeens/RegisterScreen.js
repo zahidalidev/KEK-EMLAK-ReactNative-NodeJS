@@ -130,8 +130,8 @@ function RegisterScreen(props) {
                         <ScrollView style={{ width: "100%", flex: 1.8, flexDirection: 'column' }} >
                             {/* Text feilds */}
                             {feilds.map((item, i) =>
-                                <>
-                                    <View key={i} style={{ marginLeft: "7.5%", marginTop: i == 0 ? RFPercentage(6) : RFPercentage(4), width: "85%" }} >
+                                <View key={i} >
+                                    <View style={{ marginLeft: "7.5%", marginTop: i == 0 ? RFPercentage(6) : RFPercentage(4), width: "85%" }} >
                                         <AppTextInput
                                             placeHolder={item.placeHolder}
                                             width="100%"
@@ -155,7 +155,7 @@ function RegisterScreen(props) {
                                         </View>
                                         : null
                                     }
-                                </>
+                                </View>
                             )}
 
                             {/* SignUp button */}
